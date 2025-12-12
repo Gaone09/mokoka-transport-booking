@@ -2,11 +2,25 @@ import { useState } from "react";
 import { routes } from "./data/routes";
 
 function App() {
+  const [tripType, setTripType] = useState("one-way");
+  const [returnDate, setReturnDate] = useState("");
+
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [date, setDate] = useState("");
   const [showTrips, setShowTrips] = useState(false);
+
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [seatCount, setSeatCount] = useState(1);
+  const [bookingRef, setBookingRef] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+
+  const generateBookingRef = () => {
+    const routeCode = selectedRoute.id;
+    const random = Math.random().toString(36).substring(2, 7).toUpperCase();
+    return `MK-${routeCode}-${random}`;
+  };
 
   const isValidSelection = () => {
     if (!selectedRoute) return false;
@@ -36,6 +50,8 @@ function App() {
             setPickup("");
             setDropoff("");
             setShowTrips(false);
+            setSelectedTrip(null);
+            setConfirmed(false);
           }}
         >
           <option value="">Select route</option>
@@ -45,6 +61,37 @@ function App() {
             </option>
           ))}
         </select>
+
+        {/* Trip Type */}
+        <div className="mb-4">
+          <p className="font-medium mb-2">Trip Type</p>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="tripType"
+                value="one-way"
+                checked={tripType === "one-way"}
+                onChange={() => {
+                  setTripType("one-way");
+                  setReturnDate("");
+                }}
+              />
+              One way
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="tripType"
+                value="round-trip"
+                checked={tripType === "round-trip"}
+                onChange={() => setTripType("round-trip")}
+              />
+              Round trip
+            </label>
+          </div>
+        </div>
 
         {/* Pickup */}
         {selectedRoute && (
@@ -84,16 +131,30 @@ function App() {
           </select>
         )}
 
-        {/* Date */}
+        {/* Departure Date */}
         <input
           type="date"
-          className="w-full p-3 mb-4 rounded-lg border"
+          className="w-full p-3 mb-3 rounded-lg border"
           value={date}
           onChange={(e) => {
             setDate(e.target.value);
             setShowTrips(false);
           }}
         />
+
+        {/* Return Date (Round Trip Only) */}
+        {tripType === "round-trip" && (
+          <input
+            type="date"
+            className="w-full p-3 mb-4 rounded-lg border"
+            value={returnDate}
+            min={date}
+            onChange={(e) => {
+              setReturnDate(e.target.value);
+              setShowTrips(false);
+            }}
+          />
+        )}
 
         {/* Validation */}
         {!isValidSelection() && pickup && dropoff && (
@@ -102,9 +163,14 @@ function App() {
           </p>
         )}
 
+        {/* Search Button */}
         <button
           className="w-full bg-accent text-white py-3 rounded-lg font-semibold disabled:opacity-50"
-          disabled={!isValidSelection() || !date}
+          disabled={
+            !isValidSelection() ||
+            !date ||
+            (tripType === "round-trip" && !returnDate)
+          }
           onClick={() => setShowTrips(true)}
         >
           Search trips
@@ -121,22 +187,74 @@ function App() {
                 className="bg-white p-4 mb-3 rounded-lg shadow"
               >
                 <p className="font-semibold">{selectedRoute.name}</p>
-
                 <p className="text-sm text-gray-600">
                   {pickup} → {dropoff}
                 </p>
-
                 <p className="text-sm text-gray-600">Departure: {trip.time}</p>
-
                 <p className="text-sm text-gray-600">
                   Seats available: {trip.capacity}
                 </p>
 
-                <button className="mt-3 w-full bg-primary text-white py-2 rounded-lg">
+                <button
+                  className="mt-3 w-full bg-primary text-white py-2 rounded-lg"
+                  onClick={() => {
+                    setSelectedTrip(trip);
+                    setSeatCount(1);
+                    setConfirmed(false);
+                  }}
+                >
                   Book this trip
                 </button>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Seat Selection */}
+        {selectedTrip && !confirmed && (
+          <div className="mt-6 bg-white p-4 rounded-lg shadow">
+            <h2 className="font-semibold mb-3">Passenger details</h2>
+
+            <p className="text-sm text-gray-600 mb-2">
+              {selectedRoute.name} — {selectedTrip.time}
+            </p>
+
+            <label className="block mb-2 text-sm font-medium">
+              Number of seats
+            </label>
+
+            <select
+              className="w-full p-3 mb-4 rounded-lg border"
+              value={seatCount}
+              onChange={(e) => setSeatCount(Number(e.target.value))}
+            >
+              {[1, 2, 3, 4, 5].map((n) => (
+                <option key={n} value={n} disabled={n > selectedTrip.capacity}>
+                  {n}
+                </option>
+              ))}
+            </select>
+
+            <button
+              className="w-full bg-accent text-white py-3 rounded-lg font-semibold"
+              onClick={() => {
+                if (seatCount > selectedTrip.capacity) return;
+                setBookingRef(generateBookingRef());
+                setConfirmed(true);
+              }}
+            >
+              Confirm booking
+            </button>
+          </div>
+        )}
+
+        {/* Confirmation */}
+        {confirmed && (
+          <div className="mt-6 bg-green-50 border border-green-300 p-4 rounded-lg">
+            <h2 className="font-bold text-green-700 mb-2">Booking confirmed</h2>
+            <p className="text-sm">
+              Booking reference: <strong>{bookingRef}</strong>
+            </p>
           </div>
         )}
       </main>
