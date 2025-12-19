@@ -6,6 +6,17 @@ function App() {
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [date, setDate] = useState("");
+  const [showTrips, setShowTrips] = useState(false);
+
+  const isValidSelection = () => {
+    if (!selectedRoute) return false;
+    if (!pickup || !dropoff || pickup === dropoff) return false;
+
+    const pickupIndex = selectedRoute.stops.indexOf(pickup);
+    const dropoffIndex = selectedRoute.stops.indexOf(dropoff);
+
+    return dropoffIndex > pickupIndex;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -24,6 +35,7 @@ function App() {
             setSelectedRoute(route);
             setPickup("");
             setDropoff("");
+            setShowTrips(false);
           }}
         >
           <option value="">Select route</option>
@@ -39,7 +51,10 @@ function App() {
           <select
             className="w-full p-3 mb-3 rounded-lg border"
             value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
+            onChange={(e) => {
+              setPickup(e.target.value);
+              setShowTrips(false);
+            }}
           >
             <option value="">Pickup stop</option>
             {selectedRoute.stops.map((stop) => (
@@ -55,7 +70,10 @@ function App() {
           <select
             className="w-full p-3 mb-3 rounded-lg border"
             value={dropoff}
-            onChange={(e) => setDropoff(e.target.value)}
+            onChange={(e) => {
+              setDropoff(e.target.value);
+              setShowTrips(false);
+            }}
           >
             <option value="">Drop-off stop</option>
             {selectedRoute.stops.map((stop) => (
@@ -71,15 +89,47 @@ function App() {
           type="date"
           className="w-full p-3 mb-4 rounded-lg border"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => {
+            setDate(e.target.value);
+            setShowTrips(false);
+          }}
         />
 
+        {/* Validation message */}
+        {!isValidSelection() && pickup && dropoff && (
+          <p className="text-sm text-red-600 mb-3">
+            Drop-off must come after pickup.
+          </p>
+        )}
+
         <button
-          className="w-full bg-accent text-white py-3 rounded-lg font-semibold"
-          disabled={!pickup || !dropoff || !date}
+          className="w-full bg-accent text-white py-3 rounded-lg font-semibold disabled:opacity-50"
+          disabled={!isValidSelection() || !date}
+          onClick={() => setShowTrips(true)}
         >
           Search trips
         </button>
+
+        {/* Trip Results */}
+        {showTrips && (
+          <div className="mt-6">
+            <h2 className="font-semibold mb-3">Available trips</h2>
+
+            {selectedRoute.trips.map((time) => (
+              <div key={time} className="bg-white p-4 mb-3 rounded-lg shadow">
+                <p className="font-semibold">{selectedRoute.name}</p>
+                <p className="text-sm text-gray-600">
+                  {pickup} → {dropoff}
+                </p>
+                <p className="text-sm text-gray-600">Departure: {time}</p>
+
+                <button className="mt-3 w-full bg-primary text-white py-2 rounded-lg">
+                  Book this trip
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
