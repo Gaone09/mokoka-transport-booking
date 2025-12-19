@@ -12,7 +12,10 @@ export const routes = [
       "Orapa",
       "Maun",
     ],
-    trips: ["04:30", "18:00"],
+    trips: [
+      { time: "04:30", capacity: 62 },
+      { time: "18:00", capacity: 72 },
+    ],
   },
   {
     id: "MA-GB",
@@ -27,30 +30,43 @@ export const routes = [
       "Dibete",
       "Gaborone",
     ],
-    trips: ["09:30", "18:00"],
+    trips: [
+      { time: "09;30", capacity: 62 },
+      { time: "18:00", capacity: 62 },
+    ],
   },
   {
     id: "FT-GB",
     name: "Francistown → Gaborone",
     stops: ["Francistown", "Serule", "Palapye", "Mahalapye", "Gaborone"],
-    trips: ["05:30"],
+    trips: [{ time: "05:30", capacity: 62 }],
   },
   {
     id: "SW-GB",
     name: "Serowe → Gaborone",
     stops: ["Serowe", "Palapye", "Mahalapye", "Gaborone"],
-    trips: ["06:00"],
+    trips: [
+      {
+        time: "06:00",
+        capacity: 62,
+      },
+    ],
   },
   {
     id: "GB-SW",
     name: "Gaborone → Serowe",
     stops: ["Gaborone", "Mahalapye", "Palapye", "Serowe"],
-    trips: ["13:00", "14:00", "1600"],
+    trips: [
+      { time: "13:00", capacity: 62 },
+      { time: "14:00", capacity: 62 },
+      { time: "16:00", capacity: 62 },
+    ],
+    //["13:00", "14:00", "1600"],
   },
   {
     id: "GB-FT",
     name: "Gaborone → Francistown",
     stops: ["Gaborone", "Mahalapye", "Palapye", "Tonota", "Francistown"],
-    trips: ["13:00"],
+    trips: [{ time: "13:00", capacity: 62 }],
   },
 ];

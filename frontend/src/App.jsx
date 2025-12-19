@@ -25,7 +25,7 @@ function App() {
       </header>
 
       <main className="p-4 max-w-md mx-auto">
-        <h1 className="text-lg font-bold mb-4">Book your trip</h1>
+        <h1 className="text-lg font-bold mb-4">Book your trip with us</h1>
 
         {/* Route */}
         <select
@@ -95,7 +95,7 @@ function App() {
           }}
         />
 
-        {/* Validation message */}
+        {/* Validation */}
         {!isValidSelection() && pickup && dropoff && (
           <p className="text-sm text-red-600 mb-3">
             Drop-off must come after pickup.
@@ -115,13 +115,22 @@ function App() {
           <div className="mt-6">
             <h2 className="font-semibold mb-3">Available trips</h2>
 
-            {selectedRoute.trips.map((time) => (
-              <div key={time} className="bg-white p-4 mb-3 rounded-lg shadow">
+            {selectedRoute.trips.map((trip) => (
+              <div
+                key={trip.time}
+                className="bg-white p-4 mb-3 rounded-lg shadow"
+              >
                 <p className="font-semibold">{selectedRoute.name}</p>
+
                 <p className="text-sm text-gray-600">
                   {pickup} → {dropoff}
                 </p>
-                <p className="text-sm text-gray-600">Departure: {time}</p>
+
+                <p className="text-sm text-gray-600">Departure: {trip.time}</p>
+
+                <p className="text-sm text-gray-600">
+                  Seats available: {trip.capacity}
+                </p>
 
                 <button className="mt-3 w-full bg-primary text-white py-2 rounded-lg">
                   Book this trip
