@@ -1,0 +1,56 @@
+export const routes = [
+  {
+    id: "GB-MA",
+    name: "Gaborone → Maun",
+    stops: [
+      "Gaborone",
+      "Dibete",
+      "Mahalapye",
+      "Palapye",
+      "Serowe",
+      "Letlhakane",
+      "Orapa",
+      "Maun",
+    ],
+    trips: ["04:30", "18:00"],
+  },
+  {
+    id: "MA-GB",
+    name: "Maun → Gaborone",
+    stops: [
+      "Maun",
+      "Orapa",
+      "Letlhakane",
+      "Serowe",
+      "Palapye",
+      "Mahalapye",
+      "Dibete",
+      "Gaborone",
+    ],
+    trips: ["09:30", "18:00"],
+  },
+  {
+    id: "FT-GB",
+    name: "Francistown → Gaborone",
+    stops: ["Francistown", "Serule", "Palapye", "Mahalapye", "Gaborone"],
+    trips: ["05:30"],
+  },
+  {
+    id: "SW-GB",
+    name: "Serowe → Gaborone",
+    stops: ["Serowe", "Palapye", "Mahalapye", "Gaborone"],
+    trips: ["06:00"],
+  },
+  {
+    id: "GB-SW",
+    name: "Gaborone → Serowe",
+    stops: ["Gaborone", "Mahalapye", "Palapye", "Serowe"],
+    trips: ["13:00", "14:00", "1600"],
+  },
+  {
+    id: "GB-FT",
+    name: "Gaborone → Francistown",
+    stops: ["Gaborone", "Mahalapye", "Palapye", "Tonota", "Francistown"],
+    trips: ["13:00"],
+  },
+];
