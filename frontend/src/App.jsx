@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { routes } from "./data/routes";
+import { useEffect, useState } from "react";
+import { fetchRoutes, createBooking } from "./api/booking";
 
 function App() {
   const [tripType, setTripType] = useState("one-way");
   const [returnDate, setReturnDate] = useState("");
+
+  const [routes, setRoutes] = useState([]);
+  const [loadingRoutes, setLoadingRoutes] = useState(true);
+  const [error, setError] = useState("");
 
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [pickup, setPickup] = useState("");
@@ -21,6 +25,12 @@ function App() {
     const random = Math.random().toString(36).substring(2, 7).toUpperCase();
     return `MK-${routeCode}-${random}`;
   };
+  useEffect(() => {
+    fetchRoutes()
+      .then((data) => setRoutes(data))
+      .catch(() => setError("Failed to load routes"))
+      .finally(() => setLoadingRoutes(false));
+  }, []);
 
   const isValidSelection = () => {
     if (!selectedRoute) return false;
