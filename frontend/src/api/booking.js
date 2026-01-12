@@ -1,23 +1,19 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "/api";
 
 export async function fetchRoutes() {
   const res = await fetch(`${API_BASE}/routes`);
+  if (!res.ok) throw new Error("Failed to load routes");
   return res.json();
 }
 
 export async function createBooking(payload) {
-  const res = await fetch(`${API_BASE}/book`, {
+  const res = await fetch(`${API_BASE}/bookings`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Booking failed");
-  }
-
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Booking failed");
+  return data;
 }
