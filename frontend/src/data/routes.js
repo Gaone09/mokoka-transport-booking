@@ -1,5 +1,5 @@
 export const routes = [
-  {
+  {npm
     id: "GB-MA",
     name: "Gaborone → Maun",
     stops: [
@@ -8,12 +8,12 @@ export const routes = [
       "Mahalapye",
       "Palapye",
       "Serowe",
-      "Letlhakane",
       "Orapa",
       "Maun",
     ],
     trips: [
       { time: "04:30", capacity: 62 },
+
       { time: "18:00", capacity: 72 },
     ],
   },
