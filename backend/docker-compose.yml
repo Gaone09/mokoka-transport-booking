@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: docker.io/library/postgres:16
+    container_name: mokoka_postgres
+    environment:
+      POSTGRES_DB: mokoka_transport
+      POSTGRES_USER: mokoka_admin
+      POSTGRES_PASSWORD: strongpassword123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
