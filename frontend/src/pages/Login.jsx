@@ -57,9 +57,23 @@ export default function Login() {
   });
 
   return (
-    <div style={{ minHeight:"100vh", backgroundColor:"#0a0a0a", backgroundImage:"url('/logo.svg')", backgroundSize:"cover", backgroundPosition:"center", backgroundRepeat:"no-repeat", display:"flex", alignItems:"center", justifyContent:"center", padding:"2rem", position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:"-200px", left:"50%", transform:"translateX(-50%)", width:"600px", height:"400px", background:"radial-gradient(ellipse, rgba(232,200,125,0.06) 0%, transparent 70%)", pointerEvents:"none" }} />
-      <div style={{ width:"100%", maxWidth:"440px", background:"#111", border:"1px solid #1e1e1e", borderRadius:"16px", padding:"48px 40px", boxShadow:"0 40px 80px rgba(0,0,0,0.6)" }}>
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "2rem",
+      position: "relative",
+      overflow: "hidden",
+      backgroundColor: "#0a0a0a",
+      backgroundImage: "linear-gradient(rgba(10,10,10,0.6), rgba(10,10,10,0.6)), url('/login-bg.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}>
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg, rgba(10,10,10,0.35), rgba(10,10,10,0.6))" }} />
+
+      <div style={{ width: "100%", maxWidth: "480px", background: "rgba(10,10,10,0.5)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "16px", padding: "48px 40px", boxShadow: "0 20px 48px rgba(2,6,23,0.7)", backdropFilter: "blur(8px)" }}>
         <div style={{ textAlign:"center", marginBottom:"40px" }}>
           <div style={{ width:"52px", height:"52px", background:"linear-gradient(135deg,#e8c87d,#c49a3c)", borderRadius:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:"24px", marginBottom:"16px", boxShadow:"0 8px 24px rgba(232,200,125,0.25)" }}>🚌</div>
           <h1 style={{ margin:0, fontFamily:"'Playfair Display',serif", fontSize:"26px", fontWeight:"700", color:"#f0f0f0" }}>Jones Coaches</h1>
