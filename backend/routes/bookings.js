@@ -12,21 +12,27 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Check trip exists and capacity
-    const tripRes = await pool.query("SELECT * FROM trips WHERE id = $1", [
-      tripId,
-    ]);
+    // Check trip exists and available seats
+    const tripRes = await pool.query(`
+      SELECT t.capacity, COALESCE(SUM(b.seats), 0) as booked
+      FROM trips t
+      LEFT JOIN bookings b ON b.trip_id = t.id AND b.travel_date = $2
+      WHERE t.id = $1
+      GROUP BY t.id, t.capacity
+    `, [tripId, date]);
+    
+    if (tripRes.rows.length === 0) {
+      return res.status(404).json({ message: "Trip not found" });
+    }
+
     const trip = tripRes.rows[0];
+    const availableSeats = trip.capacity - trip.booked;
 
-    if (!trip) return res.status(404).json({ message: "Trip not found" });
-    if (trip.capacity < seats)
-      return res.status(400).json({ message: "Not enough seats available" });
-
-    // Reduce seats
-    await pool.query(
-      "UPDATE trips SET capacity = capacity - $1 WHERE id = $2",
-      [seats, tripId]
-    );
+    if (availableSeats < seats) {
+      return res.status(400).json({ 
+        message: `Not enough seats available. Only ${availableSeats} seats left.` 
+      });
+    }
 
     // Generate booking reference
     const bookingRef = `MK-${tripId}-${Math.random()
@@ -65,5 +71,16 @@ router.get("/:ref", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch booking" });
   }
 });
+router.post("/:id/pay", auth, async (req, res) => {
+  const { id } = req.params;
+
+  await pool.query(
+    "UPDATE bookings SET payment_status = 'paid' WHERE id = $1",
+    [id]
+  );
+
+  res.json({ message: "Payment successful" });
+});
+
 
 module.exports = router;

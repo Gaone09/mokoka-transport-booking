@@ -1,3 +1,12 @@
+-- USERS
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
 -- ROUTES
 CREATE TABLE routes (
     id SERIAL PRIMARY KEY,
@@ -31,4 +40,17 @@ CREATE TABLE bookings (
     booking_ref TEXT UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
+ALTER TABLE bookings ADD COLUMN passengers INT NOT NULL DEFAULT 1;
+ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user';
+ALTER TABLE trips ADD COLUMN status VARCHAR(20) DEFAULT 'scheduled';
+CREATE TABLE payments (
+  id SERIAL PRIMARY KEY,
+  booking_id INT REFERENCES bookings(id),
+  provider VARCHAR(50),
+  amount NUMERIC,
+  status VARCHAR(20),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
 
