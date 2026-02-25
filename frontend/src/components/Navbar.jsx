@@ -53,13 +53,7 @@ export default function Navbar() {
           e.target.onerror = null;
           e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" rx="8" fill="%23c49a3c"/><text x="32" y="42" font-family="Playfair Display, serif" font-size="22" font-weight="700" text-anchor="middle" fill="%230a0a0a">JC</text></svg>';
         }} />
-        <span style={{
-          fontFamily: "'Playfair Display', serif",
-          color: "#f0f0f0",
-          fontSize: "18px",
-          fontWeight: "700",
-          letterSpacing: "0.02em"
-        }}>Jones Coaches</span>
+        <span style={{ width: 0, height: 0, overflow: 'hidden', position: 'absolute' }}>Jones Coaches</span>
       </Link>
 
       <div style={{ display: "flex", alignItems: "center", gap: "28px" }}>

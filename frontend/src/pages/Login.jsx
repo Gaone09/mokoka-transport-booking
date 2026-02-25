@@ -74,10 +74,9 @@ export default function Login() {
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg, rgba(10,10,10,0.35), rgba(10,10,10,0.6))" }} />
 
       <div style={{ width: "100%", maxWidth: "480px", background: "rgba(10,10,10,0.5)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "16px", padding: "48px 40px", boxShadow: "0 20px 48px rgba(2,6,23,0.7)", backdropFilter: "blur(8px)" }}>
-        <div style={{ textAlign:"center", marginBottom:"40px" }}>
-          <div style={{ width:"52px", height:"52px", background:"linear-gradient(135deg,#e8c87d,#c49a3c)", borderRadius:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:"24px", marginBottom:"16px", boxShadow:"0 8px 24px rgba(232,200,125,0.25)" }}>🚌</div>
-          <h1 style={{ margin:0, fontFamily:"'Playfair Display',serif", fontSize:"26px", fontWeight:"700", color:"#f0f0f0" }}>Jones Coaches</h1>
-          <p style={{ margin:"8px 0 0", color:"#555", fontSize:"13px", fontFamily:"'DM Mono',monospace", letterSpacing:"0.04em" }}>Luxury intercity travel</p>
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
+          <img src="/logo.svg" alt="Jones Coaches" style={{ width: "140px", height: "auto", borderRadius: "12px", display: "inline-block", marginBottom: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }} />
+          <p style={{ margin: "8px 0 0", color: "#bbb", fontSize: "13px", fontFamily: "'DM Mono',monospace", letterSpacing: "0.04em" }}>Luxury intercity travel</p>
         </div>
 
         <div style={{ display:"flex", background:"#0a0a0a", borderRadius:"8px", padding:"4px", marginBottom:"32px", border:"1px solid #1e1e1e" }}>
