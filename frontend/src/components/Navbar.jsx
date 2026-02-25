@@ -43,7 +43,7 @@ export default function Navbar() {
       zIndex: 100,
     }}>
       <Link to="/login" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px" }}>
-        <img src="/logo.svg" alt="Jones Coaches logo" style={{
+        <img src="/images/logo.svg" alt="Jones Coaches logo" style={{
           width: "32px", height: "32px",
           borderRadius: "6px",
           objectFit: "cover",

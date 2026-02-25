@@ -66,7 +66,7 @@ export default function Login() {
       position: "relative",
       overflow: "hidden",
       backgroundColor: "#0a0a0a",
-      backgroundImage: "linear-gradient(rgba(10,10,10,0.6), rgba(10,10,10,0.6)), url('/login-bg.jpg')",
+      backgroundImage: "linear-gradient(rgba(10,10,10,0.6), rgba(10,10,10,0.6)), url('/images/login-bg.jpg')",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
@@ -75,7 +75,7 @@ export default function Login() {
 
       <div style={{ width: "100%", maxWidth: "480px", background: "rgba(10,10,10,0.5)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "16px", padding: "48px 40px", boxShadow: "0 20px 48px rgba(2,6,23,0.7)", backdropFilter: "blur(8px)" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <img src="/logo.svg" alt="Jones Coaches" style={{ width: "140px", height: "auto", borderRadius: "12px", display: "inline-block", marginBottom: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }} />
+          <img src="/images/logo.svg" alt="Jones Coaches" style={{ width: "140px", height: "auto", borderRadius: "12px", display: "inline-block", marginBottom: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }} />
           <p style={{ margin: "8px 0 0", color: "#bbb", fontSize: "13px", fontFamily: "'DM Mono',monospace", letterSpacing: "0.04em" }}>Luxury intercity travel</p>
         </div>
 
