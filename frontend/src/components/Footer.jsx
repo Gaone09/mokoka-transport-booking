@@ -1,3 +1,3 @@
 export default function Footer() {
-  return <footer>© Mokoka Transport</footer>;
+  return <footer>© Jones it is Everyday</footer>;
 }

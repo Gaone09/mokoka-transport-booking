@@ -1,37 +1,28 @@
-const express = require("express");
-const router = express.Router();
-const pool = require("../db");
+const router = require("express").Router();
+const pool   = require("../db/pool");
 
-// GET trips by route
-router.get("/route/:routeId", async (req, res) => {
+// GET /api/trips/route/:routeId — trips for a specific route
+router.get("/route/:routeId", async (req, res, next) => {
   try {
-    const { routeId } = req.params;
-    const { date } = req.query;
-    let query = `
-      SELECT t.id, t.departure_time, t.capacity
-      FROM trips t
-      WHERE t.route_id = $1
-      ORDER BY t.departure_time
-    `;
-    let params = [routeId];
-    if (date) {
-      query = `
-        SELECT t.id, t.departure_time, t.capacity,
-               COALESCE(SUM(b.seats), 0) as booked,
-               t.capacity - COALESCE(SUM(b.seats), 0) as available
-        FROM trips t
-        LEFT JOIN bookings b ON b.trip_id = t.id AND b.travel_date = $2
-        WHERE t.route_id = $1
-        GROUP BY t.id, t.departure_time, t.capacity
-        ORDER BY t.departure_time
-      `;
-      params = [routeId, date];
-    }
-    const { rows } = await pool.query(query, params);
-    res.json(rows);
+    const routeId = parseInt(req.params.routeId);
+    if (isNaN(routeId)) return res.status(400).json({ message: "Invalid route ID." });
+
+    const result = await pool.query(
+      `SELECT t.id, t.departure_time, t.capacity, t.status,
+              r.name AS route_name,
+              (t.capacity - COALESCE(SUM(b.seats), 0)) AS seats_available
+       FROM trips t
+       JOIN routes r ON r.id = t.route_id
+       LEFT JOIN bookings b ON b.trip_id = t.id AND b.status != 'CANCELLED'
+       WHERE t.route_id = $1 AND t.status = 'scheduled'
+       GROUP BY t.id, r.name
+       ORDER BY t.departure_time`,
+      [routeId]
+    );
+
+    res.json(result.rows);
   } catch (err) {
-    console.error("Failed to load trips:", err.message);
-    res.status(500).json({ message: "Failed to load trips" });
+    next(err);
   }
 });
 

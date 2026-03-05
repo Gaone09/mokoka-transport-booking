@@ -1,63 +1,30 @@
-const express = require("express");
-const router = express.Router();
-const pool = require("../db");
+const router = require("express").Router();
+const pool   = require("../db/pool");
 
-// GET all routes with stops
-router.get("/", async (req, res) => {
+// GET /api/routes — public, list all routes with their stops
+router.get("/", async (req, res, next) => {
   try {
-    const result = await pool.query(`
-      SELECT 
-        r.id,
-        r.name,
-        COALESCE(
-          json_agg(rs.stop_name ORDER BY rs.stop_order)
-          FILTER (WHERE rs.id IS NOT NULL),
-          '[]'
-        ) AS stops
-      FROM routes r
-      LEFT JOIN route_stops rs ON rs.route_id = r.id
-      GROUP BY r.id
-      ORDER BY r.id
-    `);
+    const routes = await pool.query("SELECT id, name FROM routes ORDER BY id");
 
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Error loading routes:", err);
-    res.status(500).json({ message: "Failed to load routes" });
-  }
-});
-
-// GET single route with stops
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const result = await pool.query(
-      `
-      SELECT 
-        r.id,
-        r.name,
-        COALESCE(
-          json_agg(rs.stop_name ORDER BY rs.stop_order)
-          FILTER (WHERE rs.id IS NOT NULL),
-          '[]'
-        ) AS stops
-      FROM routes r
-      LEFT JOIN route_stops rs ON rs.route_id = r.id
-      WHERE r.id = $1
-      GROUP BY r.id
-      `,
-      [id]
+    // Attach stops to each route
+    const stops = await pool.query(
+      "SELECT route_id, stop_order, stop_name FROM route_stops ORDER BY route_id, stop_order"
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Route not found" });
+    const stopMap = {};
+    for (const s of stops.rows) {
+      if (!stopMap[s.route_id]) stopMap[s.route_id] = [];
+      stopMap[s.route_id].push({ order: s.stop_order, name: s.stop_name });
     }
 
-    res.json(result.rows[0]);
+    const data = routes.rows.map((r) => ({
+      ...r,
+      stops: stopMap[r.id] || [],
+    }));
+
+    res.json(data);
   } catch (err) {
-    console.error("Error loading route:", err);
-    res.status(500).json({ message: "Failed to load route" });
+    next(err);
   }
 });
 
